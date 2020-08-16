@@ -1,3 +1,16 @@
+# modifcations for node07
+
+working directory in /ScratchSSD/docker/jupyterhub_opendreamkit
+secrets stored in readonly .env
+
+to change jupyterhub then run
+
+sudo docker-compose down
+sudo docker-compose build --no-cache jupyterhub
+sudo docker-compose up
+
+
+
 # JupyterHub deployment in use at Université de Versailles
 
 This is a [JupyterHub](https://jupyter.org/hub) deployment based on

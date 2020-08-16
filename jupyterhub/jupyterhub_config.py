@@ -10,27 +10,29 @@
 ##
 
 import os
-
+# https://jupyterhub-traefik-proxy.readthedocs.io/en/latest/toml.html
+from jupyterhub_traefik_proxy import TraefikTomlProxy
 ## Generic
 c.JupyterHub.admin_access = True
 c.Spawner.default_url = '/lab'
 
+#  reverse-proxy
+
+# mark the proxy as externally managed
+c.TraefikTomlProxy.should_start = True
+
+# traefik's dynamic configuration file
+
+# configure JupyterHub to use TraefikTomlProxy
+c.JupyterHub.proxy_class = TraefikTomlProxy
+
+
 ## Authenticator
-from jhub_cas_authenticator.cas_auth import CASAuthenticator
-c.JupyterHub.authenticator_class = CASAuthenticator
-
-# The CAS URLs to redirect (un)authenticated users to.
-c.CASAuthenticator.cas_login_url = 'https://cas.uvsq.fr/login'
-c.CASLocalAuthenticator.cas_logout_url = 'https://cas.uvsq/logout'
-
-# The CAS endpoint for validating service tickets.
-c.CASAuthenticator.cas_service_validate_url = 'https://cas.uvsq.fr/serviceValidate'
-
-# The service URL the CAS server will redirect the browser back to on successful authentication.
-c.CASAuthenticator.cas_service_url = 'https://%s/hub/login' % os.environ['HOST']
-
-c.Authenticator.admin_users = { 'lucadefe' }
-
+from oauthenticator.github import GitHubOAuthenticator
+c.JupyterHub.authenticator_class = GitHubOAuthenticator
+c.Authenticator.admin_users = { 'phaustin','henryk-modzelewski', 'CharlesKrzysik' }
+c.Authenticator.whitelist = {'phaustin','CharlesKrzysik', 'henryk-modzelewski}
+c.GitHubOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
 
 ## Docker spawner
 c.JupyterHub.spawner_class = 'dockerspawner.DockerSpawner'

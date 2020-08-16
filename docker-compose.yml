@@ -3,15 +3,18 @@ version: '3'
 services:
   jupyterhub:
     build: jupyterhub
-    image: jupyterhub_img
+    image: phaustin/jupyterhub:aug16
     container_name: jupyterhub
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - jupyterhub_data:/srv/jupyterhub
     environment:
-      - DOCKER_JUPYTER_CONTAINER=jupyterlab_img
+      - DOCKER_JUPYTER_CONTAINER=phaustin/jupyterlab:aug16
       - DOCKER_NETWORK_NAME=${COMPOSE_PROJECT_NAME}_default
       - HUB_IP=jupyterhub
+      - OAUTH_CALLBACK_URL=${OAUTH_CALLBACK_URL}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
       - HOST
     labels:
       - "traefik.enable=true"
@@ -20,7 +23,7 @@ services:
 
   jupyterlab:
     build: jupyterlab
-    image: jupyterlab_img
+    image: phaustin/jupyterlab:aug16
     container_name: jupyterlab-throaway
     network_mode: none
     command: echo
@@ -34,7 +37,7 @@ services:
       - "8080:8080"
     volumes:
       - ./reverse-proxy/traefik.toml:/etc/traefik/traefik.toml
-      - /etc/certs:/etc/certs
+      - /etc/letsencrypt:/etc/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
     restart: on-failure
 
