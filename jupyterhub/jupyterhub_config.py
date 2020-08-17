@@ -55,8 +55,13 @@ c.Spawner.mem_limit = '10G'
 ## Services
 c.JupyterHub.services = [
     {
-        'name': 'cull_idle',
+        'name': 'idle-culler',
         'admin': True,
-        'command': 'python /srv/jupyterhub/cull_idle_servers.py --timeout=3600'.split(),
-    },
+        'command': [
+            sys.executable,
+            '-m', 'jupyterhub_idle_culler',
+            '--timeout=3600'
+        ],
+    }
 ]
+
