@@ -1,14 +1,24 @@
 # modifcations for node07
 
 working directory in /ScratchSSD/docker/jupyterhub_opendreamkit
+
 secrets stored in readonly .env
 
 to change jupyterhub then run
 
+```
 sudo docker-compose down
 sudo docker-compose build --no-cache jupyterhub
 sudo docker-compose up
+```
+This fails to start traefik with the error message:
 
+```
+reverse-proxy exited with code 1
+reverse-proxy    | 2020/08/17 18:16:17 command traefik error: field not found, node: statistics
+```
+
+Reference:  https://opendreamkit.org/2018/10/17/jupyterhub-docker/
 
 
 # JupyterHub deployment in use at Université de Versailles
