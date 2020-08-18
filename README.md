@@ -52,7 +52,11 @@ curl -v -u "admin:admin" localhost:8099
 
 and traefik should report "Basic auth succeeded"
 
+* Next in terminal 3 do:
 
+curl -v localhost:8081
+
+and you should get a reponse that includes the jupyterhub version.
 
 
 
