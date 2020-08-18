@@ -1,0 +1,9 @@
+name: jhub-traefik
+channels:
+- conda-forge
+dependencies:
+- jupyterhub
+- notebook
+- pip
+- pip:
+  - jupyterhub-traefik-proxy

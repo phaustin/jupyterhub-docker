@@ -1,6 +1,6 @@
 # modifcations for node07
 
-working directory in /ScratchSSD/docker/jupyterhub_opendreamkit
+working directory in /ScratchSSD/docker/jupyterhub_opendreamkit/test_compose
 
 secrets stored in readonly .env
 
@@ -19,6 +19,39 @@ reverse-proxy    | 2020/08/17 18:16:17 command traefik error: field not found, n
 ```
 
 Reference:  https://opendreamkit.org/2018/10/17/jupyterhub-docker/
+
+
+# testing traefik
+
+The following works for me:
+
+cd test_traefik
+sudo mkdir -p /usr/local/bin/traefik
+sudo chmod a+r,a+w,a+x /usr/local/bin/traefik
+conda env create -f environment.yml
+conda activate jhub-traefik
+python -m jupyterhub_traefik_proxy.install --traefik --output=/usr/local/bin/traefik
+
+now start 3 terminals, activate jhub-traefik in each and cd  to /ScratchSSD/docker/test_traefik
+
+
+terminal 1 do:
+
+/usr/local/bin/traefik/traefik --debug -c traefik.toml
+
+terminal 2 do:
+
+python -m jupyterhub -f jupyterhub_config.py --debug
+
+terminal 3 do:
+
+curl -v -u "admin:admin" localhost:8099
+
+and traefik should report "Basic auth succeeded"
+
+
+
+
 
 
 # JupyterHub deployment in use at Université de Versailles

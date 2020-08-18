@@ -10,6 +10,7 @@
 ##
 
 import os
+import sys
 # https://jupyterhub-traefik-proxy.readthedocs.io/en/latest/toml.html
 from jupyterhub_traefik_proxy import TraefikTomlProxy
 ## Generic
@@ -17,21 +18,27 @@ c.JupyterHub.admin_access = True
 c.Spawner.default_url = '/lab'
 
 #  reverse-proxy
-
-# mark the proxy as externally managed
-c.TraefikTomlProxy.should_start = True
-
-# traefik's dynamic configuration file
-
 # configure JupyterHub to use TraefikTomlProxy
 c.JupyterHub.proxy_class = TraefikTomlProxy
+
+# mark the proxy as externally managed
+c.TraefikTomlProxy.should_start = False
+c.TraefikTomlProxy.traefik_api_url = "http://127.0.0.1:8099"
+c.TraefikTomlProxy.traefik_api_password = "admin"
+c.TraefikTomlProxy.traefik_api_username = "admin"
+c.TraefikTomlProxy.toml_dynamic_config_file = "/etc/traefik/traefik.toml"
+# traefik's dynamic configuration file
+# use an empty rules.toml file in this folder
+
+[entryPoints.auth_api.auth.basic]
+users = [ "admin:admin",]
 
 
 ## Authenticator
 from oauthenticator.github import GitHubOAuthenticator
 c.JupyterHub.authenticator_class = GitHubOAuthenticator
 c.Authenticator.admin_users = { 'phaustin','henryk-modzelewski', 'CharlesKrzysik' }
-c.Authenticator.whitelist = {'phaustin','CharlesKrzysik', 'henryk-modzelewski}
+c.Authenticator.whitelist = {'phaustin','CharlesKrzysik', 'henryk-modzelewski'}
 c.GitHubOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
 
 ## Docker spawner
@@ -50,7 +57,6 @@ c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir }
 # Other stuff
 c.Spawner.cpu_limit = 1
 c.Spawner.mem_limit = '10G'
-
 
 ## Services
 c.JupyterHub.services = [

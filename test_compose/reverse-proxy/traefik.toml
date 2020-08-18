@@ -1,7 +1,11 @@
 debug = true
 
-logLevel = "ERROR"
+logLevel = "INFO"
 defaultEntryPoints = ["https","http"]
+
+[file]
+filename = "rules.toml"
+watch = true
 
 [entryPoints]
   [entryPoints.http]
@@ -15,10 +19,15 @@ defaultEntryPoints = ["https","http"]
       certFile = "/etc/letsencrypt/cr/0000_csr-certbot.pem"
       keyFile = "/etc/letsencrypt/keys/0000_key-certbot.pem"
 
+[entryPoints.auth_api]
+address = ":8099"
+
 [docker]
 domain = "docker.local"
 watch = true
 
-[api]
-  [api.statistics]
-    recentErrors = 10
+# [api]
+#   [api.statistics]
+#     recentErrors = 10
+
+

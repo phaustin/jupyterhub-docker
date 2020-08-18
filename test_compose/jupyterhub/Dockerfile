@@ -13,3 +13,5 @@ RUN pip install --upgrade pip \
        jupyterhub-traefik-proxy==0.1.6
 
 RUN python3 -m jupyterhub_traefik_proxy.install --traefik --etcd --consul --output=/usr/local/bin
+
+RUN echo "path is ${PATH}"
