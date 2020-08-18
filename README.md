@@ -22,6 +22,7 @@ Reference:  https://opendreamkit.org/2018/10/17/jupyterhub-docker/
 
 
 # testing traefik
+following https://github.com/jupyterhub/traefik-proxy/issues/55
 
 The following works for me:
 
