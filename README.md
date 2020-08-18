@@ -25,25 +25,27 @@ Reference:  https://opendreamkit.org/2018/10/17/jupyterhub-docker/
 
 The following works for me:
 
+```
 cd test_traefik
 sudo mkdir -p /usr/local/bin/traefik
 sudo chmod a+r,a+w,a+x /usr/local/bin/traefik
 conda env create -f environment.yml
 conda activate jhub-traefik
 python -m jupyterhub_traefik_proxy.install --traefik --output=/usr/local/bin/traefik
+```
 
-now start 3 terminals, activate jhub-traefik in each and cd  to /ScratchSSD/docker/test_traefik
+* now start 3 terminals, activate jhub-traefik in each and cd  to /ScratchSSD/docker/test_traefik
 
 
-terminal 1 do:
+* in terminal 1 do:
 
 /usr/local/bin/traefik/traefik --debug -c traefik.toml
 
-terminal 2 do:
+* in terminal 2 do:
 
 python -m jupyterhub -f jupyterhub_config.py --debug
 
-terminal 3 do:
+* in terminal 3 do:
 
 curl -v -u "admin:admin" localhost:8099
 
